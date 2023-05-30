@@ -1,0 +1,33 @@
+﻿@page "/"
+@using SBSender.Services;
+@using SBShared.Models
+@inject IQueueService queue
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<EditForm Model="@person" OnValidSubmit="PublishMessage">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <InputText id="firstName" class="form-control" @bind-Value="person.FirstName" />
+        <label for="lastName">Last Name</label>
+        <InputText id="lastName" class="form-control" @bind-Value="person.LastName" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code{
+    PersonModel person = new();
+
+    async Task PublishMessage()
+    {
+        await queue.SendMessageAsync(person, "personqueue");
+        person = new PersonModel();
+    }
+}
