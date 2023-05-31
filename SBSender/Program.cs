@@ -10,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<IQueueService, QueueService>();
+builder.Services.AddTransient<ITopicService, TopicService>();
 
 var app = builder.Build();
 

@@ -17,7 +17,7 @@ namespace SBSender.Services
         {
             var queueClient = new QueueClient(configuration.GetConnectionString("AzureServiceBus"), queueName);
             var messageBody = JsonSerializer.Serialize(serviceBusMessage);
-            var message = new Message(Encoding.UTF8.GetBytes(messageBody));
+            var message = new Message(Encoding.UTF8.GetBytes(messageBody));            
 
             await queueClient.SendAsync(message);
         }

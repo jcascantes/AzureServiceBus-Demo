@@ -2,14 +2,15 @@
 @using SBSender.Services;
 @using SBShared.Models
 @inject IQueueService queue
+@inject ITopicService topic
+@inject IConfiguration config
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<EditForm Model="@person" OnValidSubmit="PublishMessage">
+<EditForm Model="@person" OnValidSubmit="PublishPerson">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -22,12 +23,36 @@ Welcome to your new app.
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
+<EditForm Model="@order" OnValidSubmit="PublishOrder">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="orderId">Order id</label>
+        <InputText id="orderId" class="form-control" @bind-Value="order.OrderId" />
+        <label for="orderAmount">Amount</label>
+        <InputText id="orderAmount" class="form-control" @bind-Value="order.Amount" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
 @code{
     PersonModel person = new();
+    OrderModel order = new();
 
-    async Task PublishMessage()
+    async Task PublishPerson()
     {
-        await queue.SendMessageAsync(person, "personqueue");
+        await queue.SendMessageAsync(person, "examplequeue");
+
+        await topic.SendMessageAsync(person, config.GetValue<string>("TopicName"));
         person = new PersonModel();
+    }
+
+    async Task PublishOrder()
+    {
+        await queue.SendMessageAsync(order, "examplequeue");
+
+        await topic.SendMessageAsync(order, config.GetValue<string>("TopicName"));
+        order = new OrderModel();
     }
 }

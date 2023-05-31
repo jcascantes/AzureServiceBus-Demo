@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.CompilerServices;
-
-namespace SBShared.Models
+﻿namespace SBShared.Models
 {
     public class PersonModel
     {

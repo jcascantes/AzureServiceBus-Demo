@@ -3,13 +3,12 @@ using SBShared.Models;
 using System.Text;
 using System.Text.Json;
 
-public class SBReceiver
+public class SBQueueReceiver
 {
-    const string connectionString = @"[Replace]";
     const string queueName = "personqueue";
     IQueueClient queueClient;
 
-    public SBReceiver()
+    public SBQueueReceiver(string connectionString)
     {
         queueClient = new QueueClient(connectionString, queueName);
 
